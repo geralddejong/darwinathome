@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.darwinathome</groupId>
+    <artifactId>dah-client</artifactId>
+    <packaging>jar</packaging>
+    <name>Darwin at Home Client</name>
+    <version>1.1</version>
+    <description>Evolution is as natural as gravity.</description>
+    <inceptionYear>2009</inceptionYear>
+    <developers>
+        <developer>
+            <name>Gerald de Jong</name>
+            <email>geralddejong@gmail.com</email>
+            <roles>
+                <role>creator</role>
+            </roles>
+        </developer>
+    </developers>
+    <organization>
+        <name>Beautiful Code BV</name>
+        <url>http://www.beautifulcode.eu</url>
+    </organization>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Codehaus Snapshots</id>
+            <url>http://repository.codehaus.org/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <!-- Workaround for MNG-2974, see note below -->
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <groups>regression</groups>
+                    <parallel>true</parallel>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo.webstart</groupId>
+                <artifactId>webstart-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jnlp-inline</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <libPath/>
+                    <jnlp>
+                        <!--inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath-->
+                        <!--inputTemplate>src/main/jnlp/template.vm</inputTemplate--> <!-- relative to inputTemplateResourcePath -->
+                        <outputFile>tetragotchi.jnlp</outputFile>
+                        <mainClass>org.darwinathome.client.Client</mainClass>
+                    </jnlp>
+                    <pack200>false</pack200>
+                    <gzip>false</gzip>
+                    <outputJarVersions>false</outputJarVersions>
+                    <verbose>false</verbose>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>desperation</id>
+            <url>http://darwinathome.org/maven</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.darwinathome</groupId>
+            <artifactId>dah-core</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java</groupId>
+            <artifactId>jogl</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.13</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>

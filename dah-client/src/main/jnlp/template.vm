@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="@@BASE@@" href="@@USER@@/@@PASS@@/tetragotchi.jnlp">
+    <information>
+        <title>Tetragotchi</title>
+        <vendor>Tetragotchi</vendor>
+        <homepage href="http://tetragotchi.com/"/>
+        <description kind="one-line">Tetragotchi</description>
+        <description kind="short">Tetragotchi - the evolution game</description>
+        <description kind="tooltip">Tetragotchi - the evolution game</description>
+        <icon href="@@BASE@@/images/tg-icon.png" kind="default"/>
+        <shortcut online="true">
+            <desktop/>
+            <menu submenu="TimeFiner"/>
+        </shortcut>
+    </information>
+    <resources>
+        <j2se version="1.6+" initial-heap-size="64m" max-heap-size="128m"/>
+        <property name="jnlp.versionEnabled" value="false"/>
+        <extension name="jogl"
+                   href="http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1/webstart/jogl.jnlp"/>
+        $dependencies
+    </resources>
+    <application-desc main-class="$mainClass">
+        <argument>@@BASE@@</argument>
+        <argument>@@USER@@</argument>
+        <argument>@@PASS@@</argument>
+    </application-desc>
+</jnlp>

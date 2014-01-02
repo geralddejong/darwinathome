@@ -1,0 +1,30 @@
+body {
+    font: 12pt arial, helvetica, sans-serif normal;
+}
+
+.container_12 {
+    margin-top: 2em;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+form#loginForm {
+    background: #669900;
+    color: #fff;
+    padding: 1em;
+}
+
+form#loginForm legend {
+    margin-bottom: 1em;
+    font-size: large;
+}
+
+form#loginForm fieldset label {
+    clear: both;
+}
+
+form#loginForm fieldset input{
+    clear: both;
+}

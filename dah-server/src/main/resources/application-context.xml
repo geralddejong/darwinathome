@@ -1,0 +1,82 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+        >
+
+    <context:annotation-config/>
+
+    <bean name="home" class="org.darwinathome.server.persistence.Home"/>
+
+    <bean name="worldHistory" class="org.darwinathome.server.persistence.impl.WorldHistoryImpl"/>
+
+    <bean name="storage" class="org.darwinathome.server.persistence.impl.StorageImpl"/>
+
+    <bean id="mailSender" class="org.darwinathome.server.email.EnhancedJavaMailSenderImpl">
+        <property name="username" value="#{home.configuration.smtpUser}"/>
+        <property name="password" value="#{home.configuration.smtpPassword}"/>
+    </bean>
+
+    <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
+        <property name="passwordEncryptor">
+            <bean class="org.darwinathome.persistence.HexPasswordEncryptor"/>
+        </property>
+    </bean>
+
+    <bean id="notificationSender" class="org.darwinathome.server.email.NotificationSender">
+        <property name="from" value="darwinathome@gmail.com"/>
+        <property name="testPlayerEmail" value="#{home.configuration.testPlayerEmail}"/>
+        <property name="birthSender">
+            <bean class="org.darwinathome.server.email.EmailSender">
+                <property name="template" value="/email/birth.ftl"/>
+            </bean>
+        </property>
+        <property name="deathSender">
+            <bean class="org.darwinathome.server.email.EmailSender">
+                <property name="template" value="/email/death.ftl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="emailSenderForRegistration" class="org.darwinathome.server.email.EmailSender">
+        <property name="template" value="/email/confirmation.ftl"/>
+    </bean>
+
+    <bean id="emailSenderForExceptions" class="org.darwinathome.server.email.EmailSender">
+        <property name="template" value="/email/exception.ftl"/>
+    </bean>
+
+    <bean id="emailSenderForRegisterNotify" class="org.darwinathome.server.email.EmailSender">
+        <property name="template" value="/email/register-notify.ftl"/>
+    </bean>
+
+    <bean id="registrationEmailSender" class="org.darwinathome.server.email.RegistrationEmailSender">
+        <property name="emailSender" ref="emailSenderForRegistration"/>
+        <property name="from" value="noreply@darwinathome.org"/>
+        <property name="subject" value="Confirmation"/>
+    </bean>
+
+    <bean id="userService" class="org.darwinathome.server.persistence.UserService"/>
+
+    <bean id="successHandler" class="org.darwinathome.server.controller.SuccessHandler"/>
+
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/" access="ROLE_PLAYER"/>
+        <security:intercept-url pattern="/index.html" access="ROLE_PLAYER"/>
+        <security:form-login login-page='/login.html' authentication-success-handler-ref="successHandler"/>
+        <security:logout logout-url="/logout.html"/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userService">
+            <security:password-encoder ref="passwordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>
